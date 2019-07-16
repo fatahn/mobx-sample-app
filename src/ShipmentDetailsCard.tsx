@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export type Props = {
 	shipment: {
@@ -9,15 +9,15 @@ export type Props = {
 	}
 }
 
-const ShipmentDetailsCard = (props: Props) => {
+const ShipmentDetailsCard = ({shipment}: Props) => {
 	return (
 		<div>
-			<li>{props.shipment.name}</li>
-			<li>{props.shipment.destination}</li>
-			<li>{props.shipment.origin}</li>
-			<li>{props.shipment.status}</li>
+			<li>{shipment.name}</li>
+			<li>{shipment.destination}</li>
+			<li>{shipment.origin}</li>
+			<li>{shipment.status}</li>
 		</div>
 	)
 }
 
-export default ShipmentDetailsCard;
+export default ShipmentDetailsCard
