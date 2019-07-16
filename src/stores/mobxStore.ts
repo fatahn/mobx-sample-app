@@ -8,6 +8,7 @@ const endpoint: any = process.env.REACT_APP_ENDPOINT
 
 class DataStore {
 	@observable data = []
+	@observable filters = ''
 
 	constructor(){
 		this.fetchData()
@@ -21,6 +22,9 @@ class DataStore {
 		.json()
 		.then((res: any) => this.data = res)
 	}
+	
+	@action
+		filter = (filter: string) => { this.filters = filter}
 }
 
 export const DataStoreContext = createContext(new DataStore())
