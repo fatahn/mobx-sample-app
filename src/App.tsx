@@ -1,42 +1,65 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext, ButtonHTMLAttributes } from 'react'
+import { observer } from 'mobx-react-lite'
+
 import { Props as ShipmentProps } from './ShipmentDetailsCard'
 import ShipmentDetailsPage from './ShippingDetailsPage'
+import { DataStoreContext } from './stores/mobxStore';
 
 type Props = {
-	data: {
-		shipments: Array<ShipmentProps>,
+	dataStore?: {
+		fetchData: any,
+		target: any,
 	}
 }
 
-const App: React.FC = () => {
-	const [data, setData] = useState([])
-	const [searchText, setSearchText] = useState('')
-	const onChange = (e: { target: HTMLInputElement; }) => {
-		setSearchText(e.target.value)
+const App = observer(
+	() => {
+		const dataStore = useContext(DataStoreContext).fetchData()
+		console.log('cccc', dataStore)
+		const [searchText, setSearchText] = useState('')
+		const [isActive, setIsActive] = useState(false)
+		const [isFilterOpen, setIsFilterOpen] = useState(false)
+		const onChange = (e: { target: HTMLInputElement; }) => {
+			setSearchText(e.target.value)
+		}
+		const onToggle = (e: { target: HTMLInputElement }) => {
+			setIsActive(!isActive)
+		}
+		
+		const onShowFilter = () => {
+			setIsFilterOpen(!isFilterOpen)
+		}
+		
+		return (
+			<div>
+				<header>
+					<h3>My Shipments</h3>
+					<input onChange={onChange} />
+					<br />
+					<button onClick={onShowFilter}>
+						{
+							isFilterOpen ? `Clear Filer` : `Filter`
+						}
+					</button>
+					<br />
+					{
+						isFilterOpen ?
+						<label>
+							ACTIVE SHIPMENT
+							<input
+								name="isActive"
+								type="checkbox"
+								checked={isActive}
+								onChange={onToggle} />
+						</label>
+						:
+						null
+					}
+
+				</header>
+				{/* <ShipmentDetailsPage data={dataStore} searchText={searchText}/> */}
+			</div>
+		)
 	}
-	
-	async function fetchData() {
-    const res = await fetch(`http://localhost:3000/shipments`)
-    res
-      .json()
-      .then(res => {
-				setData(res)
-			})
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-	
-  return (
-    <div>
-			<header>
-				<h3>My Shipments</h3>
-				<input onChange={onChange} />
-			</header>
-			<ShipmentDetailsPage data={data} searchText={searchText}/>
-    </div>
-  )
-}
-
+)
 export default App
