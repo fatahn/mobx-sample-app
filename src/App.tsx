@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Props as ShipmentProps } from './ShipmentDetailsCard'
 import ShipmentDetailsPage from './ShippingDetailsPage'
 import { DataStoreContext } from './stores/mobxStore';
+import { toJS } from 'mobx'
 
 type Props = {
 	dataStore?: {
@@ -14,8 +15,8 @@ type Props = {
 
 const App = observer(
 	() => {
-		const dataStore = useContext(DataStoreContext).fetchData()
-		console.log('cccc', dataStore)
+		const dataStore = toJS(useContext(DataStoreContext).data)
+		console.log(dataStore)
 		const [searchText, setSearchText] = useState('')
 		const [isActive, setIsActive] = useState(false)
 		const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -57,7 +58,7 @@ const App = observer(
 					}
 
 				</header>
-				{/* <ShipmentDetailsPage data={dataStore} searchText={searchText}/> */}
+				<ShipmentDetailsPage data={dataStore} searchText={searchText}/>
 			</div>
 		)
 	}
