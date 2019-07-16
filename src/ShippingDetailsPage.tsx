@@ -1,18 +1,30 @@
 import React from 'react'
-import ShipmentDetailsCard, { Props as ShipmentProps } from './ShipmentDetailsCard'
+import ShipmentDetailsCard from './ShipmentDetailsCard'
+import _isEmpty from 'lodash/isEmpty'
 
 type Props = {
 	data: object[]
+	searchText: string,
 }
 
-const ShippingDetailsPage = ({ data }: Props) => {
+const ShippingDetailsPage = ({ data, searchText }: Props) => {
+	let filteredData: object[] = []
+	{
+		if(searchText){
+			console.log('aaa',filteredData)
+			filteredData = data.filter(({id}: any) => id.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
+		} else filteredData = data
+	}
+	
 	return (
-		<section>
+		<div className="column">
 		{
-			data.map(
-				(shipment: any) => <ShipmentDetailsCard shipment={shipment} />)
+			_isEmpty(filteredData) ?  `no search results for "${searchText}"`
+			:
+			filteredData.map(
+				(shipment: any, index: number) => <ShipmentDetailsCard key={index} shipment={shipment} />)
 		}
-	</section>
+	</div>
 	)
 }
 

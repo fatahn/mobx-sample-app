@@ -10,14 +10,16 @@ type Props = {
 
 const App: React.FC = () => {
 	const [data, setData] = useState([])
-
+	const [searchText, setSearchText] = useState('')
+	const onChange = (e: { target: HTMLInputElement; }) => {
+		setSearchText(e.target.value)
+	}
 	
 	async function fetchData() {
     const res = await fetch(`http://localhost:3000/shipments`)
     res
       .json()
       .then(res => {
-				console.log({res})
 				setData(res)
 			})
   }
@@ -30,8 +32,9 @@ const App: React.FC = () => {
     <div>
 			<header>
 				<h3>My Shipments</h3>
+				<input onChange={onChange} />
 			</header>
-			<ShipmentDetailsPage data={data}/>
+			<ShipmentDetailsPage data={data} searchText={searchText}/>
     </div>
   )
 }

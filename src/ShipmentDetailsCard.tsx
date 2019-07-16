@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 export type Props = {
 	shipment: {
@@ -6,16 +6,22 @@ export type Props = {
 		destination:string,
 		origin:string,
 		status:string,	
+		id:string,	
 	}
 }
 
 const ShipmentDetailsCard = ({shipment}: Props) => {
 	return (
-		<div>
-			<li>{shipment.name}</li>
-			<li>{shipment.destination}</li>
-			<li>{shipment.origin}</li>
-			<li>{shipment.status}</li>
+		<div className="column">
+			<div className="box">
+				<ul>
+					<li>{shipment.name}</li>
+					<li>id: {shipment.id}</li>
+					<li>{shipment.destination}</li>
+					<li>{shipment.origin}</li>
+					<li>{shipment.status}</li>
+				</ul>
+			</div>
 		</div>
 	)
 }
