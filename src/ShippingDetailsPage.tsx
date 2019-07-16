@@ -22,7 +22,7 @@ const ShippingDetailsPage = ({ data, searchText }: Props) => {
 			_isEmpty(filteredData) ?  `no search results for "${searchText}"`
 			:
 			filteredData.map(
-				(shipment: any, index: number) => <ShipmentDetailsCard key={index} shipment={shipment} />)
+				(shipment: any) => <ShipmentDetailsCard key={shipment.id} shipment={shipment} />)
 		}
 	</div>
 	)
