@@ -9,6 +9,7 @@ const endpoint: any = process.env.REACT_APP_ENDPOINT
 class DataStore {
 	@observable data = []
 	@observable filters = ''
+	@observable status = `pending`
 
 	constructor(){
 		this.fetchData()
@@ -20,11 +21,30 @@ class DataStore {
 
 		res
 		.json()
-		.then((res: any) => this.data = res)
+		.then((res: any) => {
+			this.status = 'sucess'
+			this.data = res
+		})
 	}
 	
 	@action
-		filter = (filter: string) => { this.filters = filter}
+	filter = (filter: string) => { this.filters = filter}
+		
+	@action
+	updateName = async (id: string, payload: any) => {
+		const res = await fetch(`${endpoint}/${id}`, {
+			method: `PATCH`,
+			body: JSON.stringify(payload),
+			headers:{'content-type': 'application/json'},
+		})
+
+		res
+		.json()
+		.then((res: any) => {
+			this.status = 'sucess'
+			this.data = res
+		})
+	}
 }
 
 export const DataStoreContext = createContext(new DataStore())
